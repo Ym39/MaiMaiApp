@@ -8,7 +8,7 @@ using HtmlAgilityPack;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-
+using System.Runtime.Serialization.Formatters.Binary;
 namespace MaiMaiApp
 {
     static class NetworkManager
@@ -21,6 +21,7 @@ namespace MaiMaiApp
 
         private readonly static string recordsUrl = "https://maimaidx-eng.com/maimai-mobile/record/";
 
+        private static StringBuilder stringBuilder = new StringBuilder();
         public static string GetMaimaiHome(CookieContainer cookie)
         {
             string result = String.Empty;
@@ -47,57 +48,7 @@ namespace MaiMaiApp
         }
 
         public async static Task<string> LoginMaiMai(CookieContainer cookieContainer)
-        {
-            //string url = loginUrl;
-            //string result;
-
-            //string data = "retention=1&sid=vinoo39&password=qusdpals39";
-
-            //var request = (HttpWebRequest)WebRequest.Create(url);
-            //request.Method = "POST";
-            ////request.Timeout = 30 * 1000;
-            //request.ContentLength = data.Length;
-            //request.KeepAlive = true;
-            //request.ContentType = "application/x-www-form-urlencoded";
-            //request.UserAgent =
-            //    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36";
-            //request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
-            //request.Host = "lng-tgk-aime-gw.am-all.net";
-            //request.Referer =
-            //    "https://lng-tgk-aime-gw.am-all.net/common_auth/login?site_id=maimaidxex&redirect_url=https://maimaidx-eng.com/maimai-mobile/&back_url=https://maimai.sega.com/";
-
-            //request.Proxy = null;
-            //request.Credentials = CredentialCache.DefaultCredentials;
-
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
-
-            //request.CookieContainer = cookieContainer;
-
-
-            //StreamWriter writer = new StreamWriter(request.GetRequestStream());
-            //writer.Write(data);
-            //writer.Close();
-
-            //try
-            //{
-            //    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            //    {
-            //        HttpStatusCode status = response.StatusCode;
-            //        Console.WriteLine(status);
-
-            //        using (var reader = new StreamReader(response.GetResponseStream()))
-            //        {
-            //            result = reader.ReadToEnd();
-            //            return result;
-            //        }
-            //    }
-            //}
-            //catch (WebException exception)
-            //{
-            //    string pageContent = new StreamReader(exception.Response.GetResponseStream()).ReadToEnd().ToString();
-            //    return pageContent;
-            //}
-
+        {         
             string url = loginUrl;
             string result;
 
@@ -183,6 +134,88 @@ namespace MaiMaiApp
                 string pageContent = new StreamReader(exception.Response.GetResponseStream()).ReadToEnd().ToString();
                 Console.WriteLine(pageContent);
                 return "Error";
+            }
+        }
+
+        public static string GetSongDataPage(CookieContainer cookieContainer)
+        {
+            string url = "https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4";
+            string result;
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.Timeout = 30 * 1000;
+            request.KeepAlive = true;
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36";
+            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+            request.Host = "maimaidx-eng.com";
+            //request.Referer = "https://maimaidx-eng.com/maimai-mobile/home/";
+
+            request.CookieContainer = cookieContainer;
+
+            try
+            {
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    result = reader.ReadToEnd();
+                    return result;
+                }
+            }
+            catch (WebException exception)
+            {
+                string pageContent = new StreamReader(exception.Response.GetResponseStream()).ReadToEnd().ToString();
+                Console.WriteLine(pageContent);
+                return "Error";
+            }
+        }
+
+        public static string GetSongData(CookieContainer cookieContainer, string songIdx)
+        {
+            stringBuilder.Clear();
+            stringBuilder.Append("https://maimaidx-eng.com/maimai-mobile/record/musicDetail/?idx=");
+            stringBuilder.Append(songIdx);
+            string url = stringBuilder.ToString();
+            string result;
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.Timeout = 30 * 1000;
+            request.KeepAlive = true;
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36";
+            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+            request.Host = "maimaidx-eng.com";
+            //request.Referer = "https://maimaidx-eng.com/maimai-mobile/home/";
+
+            request.CookieContainer = cookieContainer;
+
+            try
+            {
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    result = reader.ReadToEnd();
+                    return result;
+                }
+            }
+            catch (WebException exception)
+            {
+                string pageContent = new StreamReader(exception.Response.GetResponseStream()).ReadToEnd().ToString();
+                Console.WriteLine(pageContent);
+                return "Error";
+            }
+        }
+
+        public static CookieContainer CopyContainer(CookieContainer container)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, container);
+                stream.Seek(0, SeekOrigin.Begin);
+                return (CookieContainer)formatter.Deserialize(stream);
             }
         }
     }

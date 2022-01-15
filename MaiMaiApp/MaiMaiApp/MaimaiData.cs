@@ -4,6 +4,7 @@ using System.Text;
 using HtmlAgilityPack;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net;
 
 
 
@@ -15,7 +16,7 @@ namespace MaiMaiApp
 
         public static MaimaiData Instance
         {
-            get 
+            get
             {
                 if (instance == null)
                 {
@@ -27,7 +28,8 @@ namespace MaiMaiApp
             }
         }
 
-        private Dictionary<string, MaiMaiSong> songData;
+        private Dictionary<string, LatestSongData> latestSongData;
+        private Dictionary<string, SongData> songData;
 
         public MaimaiData()
         {
@@ -41,7 +43,7 @@ namespace MaiMaiApp
             //htmlDocument.LoadHtml(resultHtml);
 
             //var recordNodes = htmlDocument.DocumentNode.SelectSingleNode("/html/body/div[2]").ChildNodes;
-            
+
             //foreach(var node in recordNodes)
             //{
             //    if(node.Name == "div")
@@ -68,7 +70,7 @@ namespace MaiMaiApp
 
         public async Task Initalize()
         {
-            songData = new Dictionary<string, MaiMaiSong>();
+            latestSongData = new Dictionary<string, LatestSongData>();
 
             NetworkManager.GetMaimaiHome(NetworkManager.Cookie);
             await NetworkManager.LoginMaiMai(NetworkManager.Cookie);
@@ -124,19 +126,81 @@ namespace MaiMaiApp
 
                     if (title != "" && title != string.Empty)
                     {
-                        songData[title] = new MaiMaiSong(title, score, imgUri, difficulty);
+                        latestSongData[title] = new LatestSongData(title, score, imgUri, difficulty);
+                    }
+                }
+            }
+
+            songData = new Dictionary<string, SongData>();
+
+            string songDataPage = NetworkManager.GetSongDataPage(NetworkManager.Cookie);
+
+            htmlDocument.LoadHtml(songDataPage);
+
+            var songDataNode = htmlDocument.DocumentNode.SelectSingleNode("/html/body/div[2]").ChildNodes;
+
+            var nodeDocument = new HtmlDocument();
+
+            int count = 0;
+
+            foreach (var node in songDataNode)
+            {
+                if (node.Name == "div" && node.Attributes["class"].Value == "w_450 m_15 p_r f_0")
+                {
+                    count++;
+                    var songNodes = node.ChildNodes[1].ChildNodes[1].ChildNodes;
+                    string songIdx = "";
+                    if (songNodes.Count > 11)
+                        songIdx = songNodes[21].Attributes["value"].Value;
+                    else
+                        songIdx = songNodes[9].Attributes["value"].Value;
+                    string sondDataHtml = NetworkManager.GetSongData(NetworkManager.Cookie, songIdx);
+                    nodeDocument.LoadHtml(sondDataHtml);
+                    var songNameNode = nodeDocument.DocumentNode.SelectSingleNode("/html/body/div[2]/div[2]/div[1]/div[2]");
+
+                    if(songNameNode != null)
+                      songData[songNameNode.InnerText] = new SongData();
+                }
+            }
+
+            
+            if (count > songData.Count)
+            {
+                songDataPage = NetworkManager.GetSongDataPage(NetworkManager.Cookie);
+
+                htmlDocument.LoadHtml(songDataPage);
+
+                songDataNode = htmlDocument.DocumentNode.SelectSingleNode("/html/body/div[2]").ChildNodes;
+
+
+                foreach (var node in songDataNode)
+                {
+                    if (node.Name == "div" && node.Attributes["class"].Value == "w_450 m_15 p_r f_0")
+                    {
+                        var songNodes = node.ChildNodes[1].ChildNodes[1].ChildNodes;
+                        string songIdx = "";
+                        if (songNodes.Count > 11)
+                            songIdx = songNodes[21].Attributes["value"].Value;
+                        else
+                            songIdx = songNodes[9].Attributes["value"].Value;
+                        string sondDataHtml = NetworkManager.GetSongData(NetworkManager.Cookie, songIdx);
+                        nodeDocument.LoadHtml(sondDataHtml);
+                        var songNameNode = nodeDocument.DocumentNode.SelectSingleNode("/html/body/div[2]/div[2]/div[1]/div[2]");
+
+                        if (songNameNode != null && songData.ContainsKey(songNameNode.InnerText) == false)
+                            songData[songNameNode.InnerText] = new SongData();
                     }
                 }
             }
         }
 
-        public List<KeyValuePair<string, MaiMaiSong>> GetLatestRecords()
+        public List<KeyValuePair<string, LatestSongData>> GetLatestRecords()
         {
-            return songData.ToList();
+            return latestSongData.ToList();
         }
     }
 
-    class MaiMaiSong
+    class LatestSongData
     {
         public string Name { get; set; }
         public string Score { get; set; }
@@ -144,13 +208,36 @@ namespace MaiMaiApp
 
         public Difficulty Difficulty { get; set; }
 
-        public MaiMaiSong(string title, string score, string imgUrl, Difficulty difficulty)
+        public LatestSongData(string title, string score, string imgUrl, Difficulty difficulty)
         {
             Name = title;
             Score = score;
             imageUrl = imgUrl;
             Difficulty = difficulty;
         }
+    }
+
+    class SongData
+    {
+        public string Name { get; set; }
+
+        public Category category;
+
+        public SongDifficultyData BasicInfo { get; set; } = null;
+        public SongDifficultyData AdvancedInfo { get; set; } = null;
+        public SongDifficultyData ExpertInfo { get; set; } = null;
+        public SongDifficultyData MasterInfo { get; set; } = null;
+        public SongDifficultyData RemasterInfo { get; set; } = null;
+    }
+
+    class SongDifficultyData
+    {
+        public int Level { get; set; }
+        public string ClearClass { get; set; }
+        public string Score { get; set; }
+        public string DeluxScore { get; set; }
+        public string LatestPlayedDate { get; set; }
+        public string PlayCount { get; set; }
     }
 
     enum Difficulty
@@ -161,5 +248,15 @@ namespace MaiMaiApp
         Master = 3,
         ReMaster = 4,
         Unknown = 5
+    }
+
+    enum Category
+    {
+        POPS_AND_ANIME,
+        NICONICO,
+        TOUHOU,
+        GAME_AND_VARIETY,
+        MAIMAI,
+        ONGEKI_AND_CHUNITHM
     }
 }
