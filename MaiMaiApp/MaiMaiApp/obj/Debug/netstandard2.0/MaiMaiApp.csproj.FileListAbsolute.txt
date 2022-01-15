@@ -1,0 +1,17 @@
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\MaiMaiApp.csproj.AssemblyReference.cache
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\MaiMaiApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\ListView.xaml.g.cs
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\MaiMaiApp.AssemblyInfoInputs.cache
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\MaiMaiApp.AssemblyInfo.cs
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\MaiMaiApp.csproj.CoreCompileInputs.cache
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\bin\Debug\netstandard2.0\MaiMaiApp.deps.json
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\bin\Debug\netstandard2.0\MaiMaiApp.dll
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\bin\Debug\netstandard2.0\ref\MaiMaiApp.dll
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\bin\Debug\netstandard2.0\MaiMaiApp.pdb
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\MaiMaiApp.dll
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\ref\MaiMaiApp.dll
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\MaiMaiApp.pdb
+C:\Users\admin\source\repos\MaiMaiApp\MaiMaiApp\MaiMaiApp\obj\Debug\netstandard2.0\LoadingPage.xaml.g.cs

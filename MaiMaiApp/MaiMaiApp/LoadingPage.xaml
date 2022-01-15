@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MaiMaiApp.LoadingPage"
+             BackgroundColor="#127AC7">
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackLayout Grid.Row="0" VerticalOptions="Center">
+            <Label Text="Maimai!" FontSize="30" TextColor="White" HorizontalOptions="Center"></Label>
+            <Label Text="로딩 중" FontSize="18" TextColor="White" HorizontalOptions="Center"></Label>
+        </StackLayout>
+    </Grid>
+    
+</ContentPage>

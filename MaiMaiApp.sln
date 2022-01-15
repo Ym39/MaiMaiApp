@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaiMaiApp.Android", "MaiMaiApp\MaiMaiApp.Android\MaiMaiApp.Android.csproj", "{B04CDD39-49A4-4090-A0A0-EB6C9ED474B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaiMaiApp", "MaiMaiApp\MaiMaiApp\MaiMaiApp.csproj", "{DAB527BD-797A-41E6-A1CC-43E3E6FA44B9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B04CDD39-49A4-4090-A0A0-EB6C9ED474B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B04CDD39-49A4-4090-A0A0-EB6C9ED474B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B04CDD39-49A4-4090-A0A0-EB6C9ED474B2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B04CDD39-49A4-4090-A0A0-EB6C9ED474B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B04CDD39-49A4-4090-A0A0-EB6C9ED474B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B04CDD39-49A4-4090-A0A0-EB6C9ED474B2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DAB527BD-797A-41E6-A1CC-43E3E6FA44B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAB527BD-797A-41E6-A1CC-43E3E6FA44B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAB527BD-797A-41E6-A1CC-43E3E6FA44B9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DAB527BD-797A-41E6-A1CC-43E3E6FA44B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAB527BD-797A-41E6-A1CC-43E3E6FA44B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAB527BD-797A-41E6-A1CC-43E3E6FA44B9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA3F0245-7D01-4099-A74A-C02EBE4ECCCC}
+	EndGlobalSection
+EndGlobal
