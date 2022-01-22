@@ -37,8 +37,8 @@ namespace MaiMaiApp
                     ImageSource = new UriImageSource 
                     {
                         Uri = new Uri(song.Value.imageUrl),
-                        CachingEnabled = true,
-                        CacheValidity = TimeSpan.FromHours(1)
+                      
+
                     }
                 });
             }

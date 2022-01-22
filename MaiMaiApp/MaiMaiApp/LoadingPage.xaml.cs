@@ -23,7 +23,7 @@ namespace MaiMaiApp
         {
             await MaimaiData.Instance.Initalize();
 
-            await Navigation.PushAsync(new ListView());
+            await Navigation.PushAsync(new SongDataPage());
         }
     }
 }

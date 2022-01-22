@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MaiMaiApp.SongDataPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Picker x:Name="CategoryPicker" SelectedIndex="0">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>전체</x:String>
+                        <x:String>팝and애니</x:String>
+                        <x:String>보컬로이드</x:String>
+                        <x:String>동방</x:String>
+                        <x:String>마이마이</x:String>
+                        <x:String>게임and버라이어티</x:String>
+                        <x:String>온게키and츄니즘</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <Picker x:Name="LevelPicker" SelectedIndex="3">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>15</x:String>
+                        <x:String>14+</x:String>
+                        <x:String>14</x:String>
+                        <x:String>13+</x:String>
+                        <x:String>13</x:String>
+                        <x:String>12+</x:String>
+                        <x:String>12</x:String>
+                        <x:String>무관</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <Picker x:Name="Criteria" SelectedIndex="0">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>상수순</x:String>
+                        <x:String>클리어 점수순</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <ListView x:Name="SongListView" SeparatorVisibility="None" SeparatorColor="Black" RowHeight="100">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="300">
+                            <StackLayout Orientation="Horizontal" Padding="5" BackgroundColor="{Binding Color}">
+                                <Image Source="{Binding Image}"></Image>
+                                <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                    <Label Text="{Binding Name}"></Label>
+                                    <Label Text="{Binding Level}"></Label>
+                                    <Label Text="{Binding ConstLevel}"></Label>
+                                    <Label Text="{Binding ClearRank}"></Label>
+                                    <Label Text="{Binding Score}"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

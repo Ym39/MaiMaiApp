@@ -11,7 +11,7 @@ namespace MaiMaiApp
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new LoadingPage());
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected async override void OnStart()

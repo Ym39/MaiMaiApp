@@ -9,6 +9,8 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
+using Xamarin.Forms;
+
 namespace MaiMaiApp
 {
     static class NetworkManager
@@ -20,6 +22,8 @@ namespace MaiMaiApp
         private readonly static string loginUrl = "https://lng-tgk-aime-gw.am-all.net/common_auth/login/sid/";
 
         private readonly static string recordsUrl = "https://maimaidx-eng.com/maimai-mobile/record/";
+
+        public readonly static string wikiUrl = "https://maimai.wiki.fc2.com";
 
         private static StringBuilder stringBuilder = new StringBuilder();
         public static string GetMaimaiHome(CookieContainer cookie)
@@ -65,8 +69,8 @@ namespace MaiMaiApp
             var values = new Dictionary<string, string>
             {
                 {"retention","1"},
-                {"sid","vinoo39"},
-                {"password","qusdpals39"}
+                {"sid",(string)Application.Current.Properties["id"]},
+                {"password",(string)Application.Current.Properties["password"]}
             };
 
             var request = new HttpRequestMessage(HttpMethod.Post, url)
@@ -137,9 +141,32 @@ namespace MaiMaiApp
             }
         }
 
-        public static string GetSongDataPage(CookieContainer cookieContainer)
+        public static async Task<string> GetSongDataPage(CookieContainer cookieContainer, Difficulty difficulty)
         {
-            string url = "https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4";
+            string url;
+
+            switch(difficulty)
+            {
+                case Difficulty.ReMaster:
+                    url = "https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4";
+                    break;
+                case Difficulty.Master:
+                    url = "https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3";
+                    break;
+                case Difficulty.Expert:
+                    url = "https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2";
+                    break;
+                case Difficulty.Advanced:
+                    url = "https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1";
+                    break;
+                case Difficulty.Basic:
+                    url = "https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0";
+                    break;
+                default:
+                    url = "https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3";
+                    break;
+            }
+
             string result;
 
             var request = (HttpWebRequest)WebRequest.Create(url);
@@ -156,7 +183,7 @@ namespace MaiMaiApp
 
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
                 {
                     StreamReader reader = new StreamReader(response.GetResponseStream());
                     result = reader.ReadToEnd();
@@ -207,6 +234,67 @@ namespace MaiMaiApp
                 return "Error";
             }
         }
+
+        public static string GetSongListMaiMaiWiki(string url, CookieContainer cookieContainer)
+        {
+            //string url = "https://maimai.wiki.fc2.com/wiki/%E6%9B%B2%E3%83%AA%E3%82%B9%E3%83%88%28%E3%83%AC%E3%83%99%E3%83%AB%E9%A0%86%29";
+            string result;
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.Timeout = 30 * 1000;
+            //request.KeepAlive = true;
+            //request.ContentType = "application/x-www-form-urlencoded";
+            //request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36";
+            //request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+            //request.Host = "maimaidx-eng.com";
+            //request.Referer = "https://maimaidx-eng.com/maimai-mobile/home/";
+
+            request.CookieContainer = cookieContainer;
+
+            try
+            {
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    result = reader.ReadToEnd();
+                    return result;
+                }
+            }
+            catch (WebException exception)
+            {
+                string pageContent = new StreamReader(exception.Response.GetResponseStream()).ReadToEnd().ToString();
+                Console.WriteLine(pageContent);
+                return "Error";
+            }
+        }
+
+        public static string GetSongDataFromWiki(string url, CookieContainer cookieContainer)
+        {
+            string result;
+
+            var request = (HttpWebRequest)WebRequest.Create(NetworkManager.wikiUrl+url);
+            request.Method = "GET";
+            request.Timeout = 30 * 1000;       
+            request.CookieContainer = cookieContainer;
+
+            try
+            {
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    result = reader.ReadToEnd();
+                    return result;
+                }
+            }
+            catch (WebException exception)
+            {
+                string pageContent = new StreamReader(exception.Response.GetResponseStream()).ReadToEnd().ToString();
+                Console.WriteLine(pageContent);
+                return "Error";
+            }
+        }
+
 
         public static CookieContainer CopyContainer(CookieContainer container)
         {
