@@ -43,9 +43,9 @@
             <ListView x:Name="SongListView" SeparatorVisibility="None" SeparatorColor="Black" RowHeight="100">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell Height="300">
-                            <StackLayout Orientation="Horizontal" Padding="5" BackgroundColor="{Binding Color}">
-                                <Image Source="{Binding Image}"></Image>
+                        <ViewCell>
+                            <!--<StackLayout Orientation="Horizontal" Padding="5" BackgroundColor="{Binding Color}">
+                                <Image Source="{Binding Image}" WidthRequest="600" HeightRequest="600"></Image>
                                 <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
                                     <Label Text="{Binding Name}"></Label>
                                     <Label Text="{Binding Level}"></Label>
@@ -53,7 +53,28 @@
                                     <Label Text="{Binding ClearRank}"></Label>
                                     <Label Text="{Binding Score}"></Label>
                                 </StackLayout>
-                            </StackLayout>
+                            </StackLayout>-->
+                            <Grid Padding="5" BackgroundColor="{Binding Color}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Source="{Binding Image}" Aspect="Fill"/>
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Name}" LineBreakMode="TailTruncation"></Label>
+                                <Label Grid.Row="0" Grid.Column="2" Text="{Binding Score}" LineBreakMode="TailTruncation"></Label>
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Level}" LineBreakMode="TailTruncation"></Label>
+                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding ConstLevel}" LineBreakMode="TailTruncation"></Label>
+                                <Label Grid.Row="3" Grid.Column="1" Text="{Binding ClearRank}" LineBreakMode="TailTruncation"></Label>
+                            </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

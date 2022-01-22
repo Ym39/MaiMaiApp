@@ -141,7 +141,7 @@ namespace MaiMaiApp
             }
         }
 
-        public static async Task<string> GetSongDataPage(CookieContainer cookieContainer, Difficulty difficulty)
+        public static string GetSongDataPage(CookieContainer cookieContainer, Difficulty difficulty)
         {
             string url;
 
@@ -183,7 +183,7 @@ namespace MaiMaiApp
 
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+                using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
                 {
                     StreamReader reader = new StreamReader(response.GetResponseStream());
                     result = reader.ReadToEnd();

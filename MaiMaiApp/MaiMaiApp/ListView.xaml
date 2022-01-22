@@ -8,12 +8,12 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="300">
-                            <StackLayout Orientation="Horizontal" Padding="5">
+                            <StackLayout Orientation="Horizontal" Padding="5" BackgroundColor="{Binding Color}">
                                 <Image Source="{Binding ImageSource}"></Image>
                                 <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
                                     <Label Text="{Binding Name}"></Label>
                                     <Label Text="{Binding Difficulty}"></Label>
-                                    <Label Text="{Binding Status}" TextColor="Gray"></Label>
+                                    <Label Text="{Binding Status}" TextColor="White"></Label>
                                 </StackLayout>
                             </StackLayout>
                         </ViewCell>

@@ -67,7 +67,7 @@ namespace MaiMaiApp
             
             if (criteriaIndex == 0)
             {
-                var list = songData.Where(data => data.Value.category == (Category)categoryIndex)
+                var list = songData.Where(data => categoryIndex == 0 ? true : data.Value.category == (Category)categoryIndex)
                     .Where(data => data.Value.WhereLevel(level) == true)
                     .OrderByDescending(data => data.Value.SelectLevel(level).ConstLevel)
                     .Select(data => new ViewCellContect
@@ -90,7 +90,7 @@ namespace MaiMaiApp
             }
             else
             {
-                var list = songData.Where(data => data.Value.category == (Category)categoryIndex)
+                var list = songData.Where(data => categoryIndex == 0? true : data.Value.category == (Category)categoryIndex)
                     .Where(data => data.Value.WhereLevel(level) == true)
                     .OrderByDescending(data => data.Value.SelectLevel(level).Score)
                     .Select(data => new ViewCellContect

@@ -23,7 +23,12 @@ namespace MaiMaiApp
         {
             await MaimaiData.Instance.Initalize();
 
-            await Navigation.PushAsync(new SongDataPage());
+            await Navigation.PushAsync(new MainPage());
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
         }
     }
 }

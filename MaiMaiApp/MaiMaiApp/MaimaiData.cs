@@ -30,7 +30,7 @@ namespace MaiMaiApp
             }
         }
 
-        private Dictionary<string, LatestSongData> latestSongData;
+        private List<LatestSongData> latestSongData;
         private Dictionary<string, SongData> songData = new Dictionary<string, SongData>();
 
         HtmlDocument globalHtmlDocument = new HtmlDocument();
@@ -76,8 +76,7 @@ namespace MaiMaiApp
 
         public async Task Initalize()
         {
-            latestSongData = new Dictionary<string, LatestSongData>();
-
+            latestSongData =new List<LatestSongData>();
             NetworkManager.GetMaimaiHome(NetworkManager.Cookie);
             await NetworkManager.LoginMaiMai(NetworkManager.Cookie);
             var resultHtml = NetworkManager.GotoRecords(NetworkManager.Cookie);
@@ -132,105 +131,12 @@ namespace MaiMaiApp
 
                     if (title != "" && title != string.Empty)
                     {
-                        latestSongData[title] = new LatestSongData(title, score, imgUri, difficulty);
+                        latestSongData.Add(new LatestSongData(title, score, imgUri, difficulty));
                     }
                 }
             }
 
-           
-
-            //string songDataPage = await NetworkManager.GetSongDataPage(NetworkManager.Cookie,Difficulty.Master);
-
-            //htmlDocument.LoadHtml(songDataPage);
-
-            //var songDataNode = htmlDocument.DocumentNode.SelectSingleNode("/html/body/div[2]").ChildNodes;
-
-            //var nodeDocument = new HtmlDocument();
-
-            //int count = 0;
-
-            //Category currentCategory = Category.POPS_AND_ANIME;
-
-            //StringBuilder stringBuilder = new StringBuilder();
-
-            //foreach (var node in songDataNode)
-            //{
-            //    if (node.Name == "div" && node.Attributes["class"].Value == "w_450 m_15 p_r f_0")
-            //    {
-            //        var songNodes = node.ChildNodes[1].ChildNodes[1].ChildNodes;
-            //        var newSongData = new SongData();
-            //        newSongData.category = currentCategory;
-            //        var songDifficultyData = new SongDifficultyData();
-
-            //        string name = songNodes[7].InnerText;
-            //        songDifficultyData.Level = songNodes[5].InnerText;
-
-            //        if (node.Attributes.Count > 1)
-            //        {
-            //            if (!node.Attributes["id"].Value.Contains("dx"))
-            //            {
-            //                stringBuilder.Clear();
-            //                stringBuilder.Append(name);
-            //                stringBuilder.Append("_STANDARD");
-            //                name = stringBuilder.ToString();
-            //            }
-            //        }
-
-            //        if (songNodes.Count > 11)
-            //        {
-            //            songDifficultyData.Score = songNodes[9].InnerText;
-            //            songDifficultyData.DeluxScore = string.Join("", songNodes[11].InnerText.Split('\t', '\n'));
-            //        }
-
-            //        newSongData.MasterInfo = songDifficultyData;
-
-            //        songData[name] = newSongData;
-
-
-            //        count++;
-            //        //string songIdx = "";
-            //        //if (songNodes.Count > 11)
-            //        //    songIdx = songNodes[21].Attributes["value"].Value;
-            //        //else
-            //        //    songIdx = songNodes[9].Attributes["value"].Value;
-            //        //string sondDataHtml = NetworkManager.GetSongData(NetworkManager.Cookie, songIdx);
-            //        //nodeDocument.LoadHtml(sondDataHtml);
-            //        //var songNameNode = nodeDocument.DocumentNode.SelectSingleNode("/html/body/div[2]/div[2]/div[1]/div[2]");
-
-            //        //if(songNameNode != null)
-            //        //  songData[songNameNode.InnerText] = new SongData();
-            //    }
-            //    else if (node.Name == "div" && node.Attributes["class"].Value == "screw_block m_15 f_15 scroll_point")
-            //    {
-            //        switch (node.InnerText)
-            //        {
-            //            case "POPS＆ANIME":
-            //                currentCategory = Category.POPS_AND_ANIME;
-            //                break;
-            //            case "niconico＆VOCALOID™":
-            //                currentCategory = Category.NICONICO;
-            //                break;
-            //            case "東方Project":
-            //                currentCategory = Category.TOUHOU;
-            //                break;
-            //            case "GAME＆VARIETY":
-            //                currentCategory = Category.GAME_AND_VARIETY;
-            //                break;
-            //            case "maimai":
-            //                currentCategory = Category.MAIMAI;
-            //                break;
-            //            case "オンゲキ＆CHUNITHM":
-            //                currentCategory = Category.ONGEKI_AND_CHUNITHM;
-            //                break;
-            //        }
-            //    }
-            //}
-
-            await ParseSongData(Difficulty.Master);
-            await ParseSongData(Difficulty.Expert);
-            await ParseSongData(Difficulty.Advanced);
-            await ParseSongData(Difficulty.Basic);
-            await ParseSongData(Difficulty.ReMaster);
+            await SongDataTask();
 
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -265,6 +171,19 @@ namespace MaiMaiApp
                     count = 0;
                 }
             }
+        }
+
+        private async Task SongDataTask()
+        {
+            List<Task> tasks = new List<Task>();
+
+            tasks.Add(Task.Run(() => { ParseSongData(Difficulty.Master); }));
+            tasks.Add(Task.Run(() => { ParseSongData(Difficulty.Expert); }));
+            tasks.Add(Task.Run(() => { ParseSongData(Difficulty.Advanced); }));
+            tasks.Add(Task.Run(() => { ParseSongData(Difficulty.Basic); }));
+            tasks.Add(Task.Run(() => { ParseSongData(Difficulty.ReMaster); }));
+
+            await Task.WhenAll(tasks);
         }
 
 
@@ -387,9 +306,9 @@ namespace MaiMaiApp
             return false;
         }
 
-        private async Task ParseSongData(Difficulty difficulty)
+        private void ParseSongData(Difficulty difficulty)
         {
-            string songDataPage = await NetworkManager.GetSongDataPage(NetworkManager.Cookie,difficulty);
+            string songDataPage = NetworkManager.GetSongDataPage(NetworkManager.Cookie,difficulty);
 
             HtmlDocument htmlDocument = new HtmlDocument();
 
@@ -491,9 +410,9 @@ namespace MaiMaiApp
             }
         }
 
-        public List<KeyValuePair<string, LatestSongData>> GetLatestRecords()
+        public List<LatestSongData> GetLatestRecords()
         {
-            return latestSongData.ToList();
+            return latestSongData;
         }
 
         public List<KeyValuePair<string, SongData>> GetSongDataList()
@@ -598,7 +517,7 @@ namespace MaiMaiApp
             if (MasterInfo?.Level == level)
                 return Color.MediumPurple;
             if (RemasterInfo?.Level == level)
-                return Color.Plum;
+                return Color.FromHex("FAE6FF");
 
             return Color.White;
         }

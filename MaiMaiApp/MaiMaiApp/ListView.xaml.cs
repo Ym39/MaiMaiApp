@@ -31,20 +31,47 @@ namespace MaiMaiApp
             {
                 list.Add(new Contect
                 {
-                    Name = song.Key,
-                    Status = song.Value.Score,
-                    Difficulty = song.Value.Difficulty.ToString(),
-                    ImageSource = new UriImageSource 
+                    Name = song.Name,
+                    Status = song.Score,
+                    Difficulty = song.Difficulty.ToString(),
+                    Color = Contect.GetColor(song.Difficulty),
+                    ImageSource = new UriImageSource
                     {
-                        Uri = new Uri(song.Value.imageUrl),
-                      
-
+                        Uri = new Uri(song.imageUrl),
                     }
-                });
+                }); 
             }
 
 
             listView.ItemsSource = list;
+        }
+    }
+
+    class Contect
+    {
+        public string Name { get; set; }
+        public string Status { get; set; }
+        public string Difficulty { get; set; }
+        public ImageSource ImageSource { get; set; }
+        public Color Color { get; set; }
+
+        public static Color GetColor(Difficulty difficulty)
+        {
+            switch(difficulty)
+            {
+                case MaiMaiApp.Difficulty.ReMaster:
+                    return Color.FromHex("FAE6FF");
+                case MaiMaiApp.Difficulty.Master:
+                    return Color.MediumPurple;
+                case MaiMaiApp.Difficulty.Expert:
+                    return Color.LightPink;            
+                case MaiMaiApp.Difficulty.Advanced:
+                    return Color.LightYellow;
+                case MaiMaiApp.Difficulty.Basic:
+                    return Color.LightGreen;
+                default:
+                    return Color.White;
+            }
         }
     }
 }

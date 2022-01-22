@@ -1,24 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MaiMaiApp.MainPage">
+             x:Class="MaiMaiApp.MainPage"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
 
-    <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
-        </Frame>
-        <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
-        <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="30,0,30,0"/>
-        <Label FontSize="16" Padding="30,24,30,0">
-            <Label.FormattedText>
-                <FormattedString>
-                    <FormattedString.Spans>
-                        <Span Text="Learn more at "/>
-                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
-                    </FormattedString.Spans>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
-    </StackLayout>
+    <Grid Padding="40" RowSpacing="10" ColumnSpacing="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Button x:Name="LatestButton" Grid.Row="0" Grid.Column="0" FontSize="30" TextColor="White" BackgroundColor="SkyBlue" Text="최근 기록"></Button>
+        <Button x:Name="SongDataButton" Grid.Row="0" Grid.Column="1" FontSize="30" TextColor="White" BackgroundColor="SkyBlue" Text="곡 정보"></Button>
+    </Grid>
 
 </ContentPage>
